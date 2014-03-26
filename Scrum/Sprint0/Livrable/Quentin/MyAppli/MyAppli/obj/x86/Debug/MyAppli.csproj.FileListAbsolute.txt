@@ -1,0 +1,4 @@
+c:\users\pri\documents\visual studio 2010\Projects\MyAppli\MyAppli\bin\Debug\MyAppli.exe
+c:\users\pri\documents\visual studio 2010\Projects\MyAppli\MyAppli\bin\Debug\MyAppli.pdb
+c:\users\pri\documents\visual studio 2010\Projects\MyAppli\MyAppli\obj\x86\Debug\MyAppli.exe
+c:\users\pri\documents\visual studio 2010\Projects\MyAppli\MyAppli\obj\x86\Debug\MyAppli.pdb

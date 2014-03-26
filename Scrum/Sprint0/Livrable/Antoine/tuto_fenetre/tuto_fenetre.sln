@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tuto_fenetre", "tuto_fenetre\tuto_fenetre.csproj", "{A6181B14-75F6-48F5-9DD4-9B6FC0ABCBFC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A6181B14-75F6-48F5-9DD4-9B6FC0ABCBFC}.Debug|x86.ActiveCfg = Debug|x86
+		{A6181B14-75F6-48F5-9DD4-9B6FC0ABCBFC}.Debug|x86.Build.0 = Debug|x86
+		{A6181B14-75F6-48F5-9DD4-9B6FC0ABCBFC}.Release|x86.ActiveCfg = Release|x86
+		{A6181B14-75F6-48F5-9DD4-9B6FC0ABCBFC}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

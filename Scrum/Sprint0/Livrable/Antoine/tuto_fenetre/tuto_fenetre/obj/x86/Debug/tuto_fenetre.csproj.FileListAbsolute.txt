@@ -1,0 +1,7 @@
+c:\users\user\documents\visual studio 2010\Projects\tuto_fenetre\tuto_fenetre\bin\Debug\tuto_fenetre.exe
+c:\users\user\documents\visual studio 2010\Projects\tuto_fenetre\tuto_fenetre\bin\Debug\tuto_fenetre.pdb
+c:\users\user\documents\visual studio 2010\Projects\tuto_fenetre\tuto_fenetre\obj\x86\Debug\tuto_fenetre.Form1.resources
+c:\users\user\documents\visual studio 2010\Projects\tuto_fenetre\tuto_fenetre\obj\x86\Debug\tuto_fenetre.Properties.Resources.resources
+c:\users\user\documents\visual studio 2010\Projects\tuto_fenetre\tuto_fenetre\obj\x86\Debug\tuto_fenetre.csproj.GenerateResource.Cache
+c:\users\user\documents\visual studio 2010\Projects\tuto_fenetre\tuto_fenetre\obj\x86\Debug\tuto_fenetre.exe
+c:\users\user\documents\visual studio 2010\Projects\tuto_fenetre\tuto_fenetre\obj\x86\Debug\tuto_fenetre.pdb
