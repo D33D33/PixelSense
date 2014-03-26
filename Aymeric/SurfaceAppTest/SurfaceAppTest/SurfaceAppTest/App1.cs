@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Media;
 using System.Windows.Forms;
 using Microsoft.Surface;
 using Microsoft.Surface.Core;
@@ -11,6 +12,12 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Audio;
+using SurfaceControls = Microsoft.Surface.Presentation.Controls;
+using Microsoft.Surface.Presentation;
+using Microsoft.Surface.Presentation.Input;
+
+
 
 
 namespace SurfaceAppTest
@@ -24,8 +31,10 @@ namespace SurfaceAppTest
         private readonly GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
 
+        private LinkedList<SpriteData> sprites = new LinkedList<SpriteData>();
+
         private TouchTarget touchTarget;
-        private Color backgroundColor = new Color(81, 81, 81);
+        private Microsoft.Xna.Framework.Color backgroundColor = new Microsoft.Xna.Framework.Color(0,81, 81, 81);
         private bool applicationLoadCompleteSignalled;
 
         private UserOrientation currentOrientation = UserOrientation.Bottom;
@@ -34,6 +43,7 @@ namespace SurfaceAppTest
         private int screenWidth;
         private int screenHeight;
 
+        SoundEffect _ballBounceWall;
         private Texture2D bignou; // palet
         private Texture2D raquetteGauche; //raquette1
         private Texture2D raquetteDroite; //raquette2
@@ -47,8 +57,13 @@ namespace SurfaceAppTest
         private Vector2 raquetteDroitePosition;
         private Vector2 raquetteDroiteDep;
 
+        private KeyboardState _keyboardState;
+        private float paletSpeed;
+        private float raqetteSpeed;
 
-
+        private Rectangle hitboxRaquetteGauche;
+        private Rectangle hitboxRaquetteDroite;
+        private Rectangle hitboxBignou;
 
         /// <summary>
         /// The target receiving all surface input for the application.
@@ -90,10 +105,13 @@ namespace SurfaceAppTest
         }
 
         private void evtRaquetteDroite(object sender, EventArgs e){
-            
+            raquetteGauchePosition.X = 50;
+            raquetteGauchePosition.Y = 100;
         }
 
         private void evtRaquetteGauche(object sender, EventArgs e){
+            
+            
 
         }
 
@@ -116,7 +134,7 @@ namespace SurfaceAppTest
             touchTarget = new TouchTarget(Window.Handle, EventThreadChoice.OnBackgroundThread);
             touchTarget.EnableInput();
 
-            touchTarget.TouchMove += new EventHandler<TouchEventArgs>(evtRaquetteDroite);
+            //touchTarget.TouchMove += new EventHandler<TouchEventArgs>(evtRaquetteDroite);
         }
 
         #endregion
@@ -158,10 +176,10 @@ namespace SurfaceAppTest
                 screenTransform = inverted;
             }
 
-            screenWidth = Window.ClientBounds.Width;
-            screenHeight = Window.ClientBounds.Height;
+            screenWidth = Program.WindowSize.Width;
+            screenHeight = Program.WindowSize.Height;
 
-            BignouPosition = Vector2.Zero;
+            BignouPosition = new Vector2(screenWidth / 2, screenHeight/2);
             BignouDep = Vector2.One;
 
             raquetteGauchePosition = new Vector2(0,0);
@@ -169,6 +187,11 @@ namespace SurfaceAppTest
 
             raquetteDroitePosition = new Vector2(screenWidth - 140, screenHeight-455);
             raquetteDroiteDep = new Vector2(0, 1);
+
+            raqetteSpeed = 5;
+            paletSpeed = 3;
+
+            
 
             base.Initialize();
         }
@@ -182,12 +205,15 @@ namespace SurfaceAppTest
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+
             // TODO: use this.Content to load your application content here
             bignou = Content.Load<Texture2D>("paletGame");
             raquetteGauche = Content.Load<Texture2D>("raquette1");
             raquetteDroite = Content.Load<Texture2D>("raquette2");
+            _ballBounceWall = Content.Load<SoundEffect>("bahhhhh");
             
         }
+
 
         /// <summary>
         /// UnloadContent will be called once per app and is the place to unload
@@ -198,6 +224,7 @@ namespace SurfaceAppTest
             // TODO: Unload any non ContentManager content here
         }
 
+
         /// <summary>
         /// Allows the app to run logic such as updating the world,
         /// checking for collisions, gathering input and playing audio.
@@ -205,40 +232,153 @@ namespace SurfaceAppTest
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+
+            // Hitbox des raquettes
+            hitboxRaquetteGauche = new Rectangle((int)raquetteGauchePosition.X, (int)raquetteGauchePosition.Y, raquetteGauche.Width, raquetteGauche.Height);
+            hitboxRaquetteDroite = new Rectangle((int)raquetteDroitePosition.X, (int)raquetteDroitePosition.Y, raquetteDroite.Width, raquetteDroite.Height);
+            hitboxBignou = new Rectangle((int)BignouPosition.X,(int)BignouPosition.Y,bignou.Width,bignou.Height);
+
             if (ApplicationServices.WindowAvailability != WindowAvailability.Unavailable)
             {
                 if (ApplicationServices.WindowAvailability == WindowAvailability.Interactive)
                 {
                     // TODO: Process touches, 
                     // use the following code to get the state of all current touch points.
-                    // ReadOnlyTouchPointCollection touches = touchTarget.GetState();
+                    ReadOnlyTouchPointCollection touches = touchTarget.GetState();
+                    
+
+                    
                 }
 
                 // TODO: Add your update logic here
                 BignouPosition += BignouDep;
-                raquetteGauchePosition += raquetteGaucheDep;
-                raquetteDroitePosition += raquetteDroiteDep;
-
+                
+                // logique du bignou : collision
                 if((BignouDep.X < 0 && BignouPosition.X <= 0) || (BignouDep.X > 0 && BignouPosition.X + bignou.Width >= screenWidth)){
                     BignouDep.X = -BignouDep.X;
+                    _ballBounceWall.Play();
                 }
-                if((BignouDep.Y < 0 && BignouPosition.Y <= 0) || (BignouDep.Y > 0 && BignouPosition.Y + bignou.Height >= screenHeight))
+                else if((BignouDep.Y < 0 && BignouPosition.Y <= 0) || (BignouDep.Y > 0 && BignouPosition.Y + bignou.Height >= screenHeight))
                 {
                     BignouDep.Y = -BignouDep.Y;
+                    _ballBounceWall.Play();
                 }
-                if((raquetteGaucheDep.Y < 0 && raquetteGauchePosition.Y <= 0) || (raquetteGaucheDep.Y > 0 && raquetteGauchePosition.Y + raquetteGauche.Height >= screenHeight))
+
+
+                if (BignouDep.X < 0 && hitboxRaquetteGauche.Contains((int)BignouPosition.X, (int)BignouPosition.Y) || BignouDep.X < 0 && hitboxRaquetteGauche.Contains((int)BignouPosition.X, (int)BignouPosition.Y + bignou.Height))
                 {
-                    raquetteGaucheDep.Y = -raquetteGaucheDep.Y;
+                    BignouDep.X = -BignouDep.X;
+                    _ballBounceWall.Play();
                 }
-                if ((raquetteDroiteDep.Y < 0 && raquetteDroitePosition.Y <= 0) || (raquetteDroiteDep.Y > 0 && raquetteDroitePosition.Y + raquetteDroite.Height >= screenHeight))
+                else if (BignouDep.X > 0 && hitboxRaquetteDroite.Contains((int)BignouPosition.X + bignou.Width, (int)BignouPosition.Y) || BignouDep.X > 0 && hitboxRaquetteDroite.Contains((int)BignouPosition.X + bignou.Width, (int)BignouPosition.Y + bignou.Height))
                 {
-                    raquetteDroiteDep.Y = -raquetteDroiteDep.Y;
+                    BignouDep.X = -BignouDep.X;
+                    _ballBounceWall.Play();
+                }
+                else
+                {
+                    //DO NOTHING
+                }
+
+                _keyboardState = Keyboard.GetState();
+                if (_keyboardState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Up)){
+                    if (raquetteDroitePosition.Y >= 0)
+                    {
+                        raquetteDroitePosition.Y -= raqetteSpeed;
+                    }
+                    else
+                    {
+                        // DO NOTHING : POSITION LOCK !
+                    }
+                }
+                else if (_keyboardState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Down))
+                {
+                    if (raquetteDroitePosition.Y <= screenHeight - raquetteDroite.Height)
+                    {
+                        raquetteDroitePosition.Y += raqetteSpeed;
+                    }
+                    else
+                    {
+                        // DO NOTHING : POSITION LOCK !
+                    }
+                }
+
+                if (_keyboardState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Right))
+                {
+                    if (raquetteDroitePosition.X < screenWidth - raquetteDroite.Width)
+                    {
+                        raquetteDroitePosition.X += raqetteSpeed;
+                    }
+                    else{
+                        // DO NOTHING : POSITION LOCK !
+                    }
+                }
+                else if (_keyboardState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Left))
+                {
+                    if (raquetteDroitePosition.X > ((screenWidth / 2) + raquetteDroite.Width) * 0.9)
+                    {
+                        raquetteDroitePosition.X -= raqetteSpeed;
+                    }
+                    else
+                    {
+                        // DO NOTHING : POSITION LOCK !
+                    }
+                }
+
+                if (_keyboardState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Z))
+                {
+                    if (raquetteGauchePosition.Y >= 0)
+                    {
+                        raquetteGauchePosition.Y -= raqetteSpeed;
+                    }
+                    else
+                    {
+                        // DO NOTHING : POSITION LOCK !
+                    }
+                }
+                else if (_keyboardState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.S))
+                {
+                    if (raquetteGauchePosition.Y <= screenHeight - raquetteGauche.Height)
+                    {
+                        raquetteGauchePosition.Y += raqetteSpeed;
+                    }
+                    else
+                    {
+                        // DO NOTHING : POSITION LOCK !
+                    }
+                }
+
+                if (_keyboardState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D))
+                {
+                    if (raquetteGauchePosition.X < ((screenWidth / 2) - raquetteGauche.Width) * 0.9)
+                    {
+                        raquetteGauchePosition.X += raqetteSpeed;
+                    }
+                    else
+                    {
+                        // DO NOTHING : POSITION LOCK !
+                    }
+                }
+                else if (_keyboardState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Q))
+                {
+                    if (raquetteGauchePosition.X > 0)
+                    {
+                        raquetteGauchePosition.X -= raqetteSpeed;
+                    }
+                    else
+                    {
+                        // DO NOTHING : POSITION LOCK !
+                    }
+
                 }
                 
             }
-
+            
             base.Update(gameTime);
         }
+
+
+
 
         /// <summary>
         /// This is called when the app should draw itself.
@@ -260,10 +400,12 @@ namespace SurfaceAppTest
             //TODO: Add your drawing code here
 
             spriteBatch.Begin();
-            spriteBatch.Draw(raquetteGauche, raquetteGauchePosition, Color.White);
-            spriteBatch.Draw(raquetteDroite, raquetteDroitePosition, Color.White);
-            spriteBatch.Draw(bignou, BignouPosition, Color.White);
-            
+            spriteBatch.Draw(raquetteGauche, raquetteGauchePosition, Microsoft.Xna.Framework.Color.White);
+            spriteBatch.Draw(raquetteDroite, raquetteDroitePosition, Microsoft.Xna.Framework.Color.White);
+            spriteBatch.Draw(bignou, BignouPosition, Microsoft.Xna.Framework.Color.White);
+            spriteBatch.Draw(raquetteGauche,hitboxRaquetteGauche,Microsoft.Xna.Framework.Color.Yellow);
+            spriteBatch.Draw(raquetteDroite,hitboxRaquetteDroite,Microsoft.Xna.Framework.Color.Orange);
+            spriteBatch.Draw(bignou, hitboxBignou, Microsoft.Xna.Framework.Color.Red);
             spriteBatch.End();
 
             //TODO: Avoid any expensive logic if application is neither active nor previewed
