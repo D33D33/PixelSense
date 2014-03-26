@@ -1,0 +1,2 @@
+C:\Users\user\Documents\Visual Studio 2010\Projects\MonJoliPortavion\MonJoliPortavion\MonJoliPortavionContent\obj\x86\Debug\MonJoliPortavionContent.contentprojResolveAssemblyReference.cache
+C:\Users\m0leguer\Documents\Visual Studio 2010\Projects\MonJoliPortavion\MonJoliPortavion\MonJoliPortavionContent\obj\x86\Debug\MonJoliPortavionContent.contentprojResolveAssemblyReference.cache

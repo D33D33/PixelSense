@@ -1,0 +1,9 @@
+c:\users\pri\documents\visual studio 2010\Projects\Game1\Game1\Game1\bin\x86\Debug\Resources\icon.png
+c:\users\pri\documents\visual studio 2010\Projects\Game1\Game1\Game1\bin\x86\Debug\Game1.xml
+c:\users\pri\documents\visual studio 2010\Projects\Game1\Game1\Game1\bin\x86\Debug\Game1.exe
+c:\users\pri\documents\visual studio 2010\Projects\Game1\Game1\Game1\bin\x86\Debug\Game1.pdb
+c:\users\pri\documents\visual studio 2010\Projects\Game1\Game1\Game1\obj\x86\Debug\Game1.csprojResolveAssemblyReference.cache
+c:\users\pri\documents\visual studio 2010\Projects\Game1\Game1\Game1\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+c:\users\pri\documents\visual studio 2010\Projects\Game1\Game1\Game1\obj\x86\Debug\Game1.exe
+c:\users\pri\documents\visual studio 2010\Projects\Game1\Game1\Game1\obj\x86\Debug\Game1.pdb
+c:\users\pri\documents\visual studio 2010\Projects\Game1\Game1\Game1\bin\x86\Debug\Content\Manchots_empereur.xnb

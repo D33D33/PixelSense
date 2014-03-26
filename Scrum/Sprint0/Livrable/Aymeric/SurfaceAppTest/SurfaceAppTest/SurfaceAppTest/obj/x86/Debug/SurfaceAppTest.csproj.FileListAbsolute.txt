@@ -1,0 +1,13 @@
+c:\users\k1duchem\documents\visual studio 2010\Projects\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\bin\x86\Debug\Resources\icon.png
+c:\users\k1duchem\documents\visual studio 2010\Projects\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\bin\x86\Debug\SurfaceAppTest.xml
+c:\users\k1duchem\documents\visual studio 2010\Projects\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\bin\x86\Debug\SurfaceAppTest.exe
+c:\users\k1duchem\documents\visual studio 2010\Projects\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\bin\x86\Debug\SurfaceAppTest.pdb
+c:\users\k1duchem\documents\visual studio 2010\Projects\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\obj\x86\Debug\SurfaceAppTest.csprojResolveAssemblyReference.cache
+c:\users\k1duchem\documents\visual studio 2010\Projects\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+c:\users\k1duchem\documents\visual studio 2010\Projects\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\obj\x86\Debug\SurfaceAppTest.exe
+c:\users\k1duchem\documents\visual studio 2010\Projects\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\obj\x86\Debug\SurfaceAppTest.pdb
+C:\Users\k1duchem\Documents\Visual Studio 2010\Projects\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\bin\x86\Debug\Content\imageTest.xnb
+C:\Users\k1duchem\Documents\Visual Studio 2010\Projects\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\bin\x86\Debug\Content\paletGame.xnb
+C:\Users\k1duchem\Documents\Visual Studio 2010\Projects\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\bin\x86\Debug\Content\raquette1.xnb
+C:\Users\k1duchem\Documents\Visual Studio 2010\Projects\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\bin\x86\Debug\Content\raquette2.xnb
+C:\Users\k1duchem\documents\visual studio 2010\Projects\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\bin\x86\Debug\Content\bahhhhh.xnb

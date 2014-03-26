@@ -1,0 +1,4 @@
+c:\users\m0leguer\documents\visual studio 2010\Projects\MaPremierApplication\MaPremierApplication\bin\Debug\MaPremierApplication.exe
+c:\users\m0leguer\documents\visual studio 2010\Projects\MaPremierApplication\MaPremierApplication\bin\Debug\MaPremierApplication.pdb
+c:\users\m0leguer\documents\visual studio 2010\Projects\MaPremierApplication\MaPremierApplication\obj\x86\Debug\MaPremierApplication.exe
+c:\users\m0leguer\documents\visual studio 2010\Projects\MaPremierApplication\MaPremierApplication\obj\x86\Debug\MaPremierApplication.pdb
