@@ -48,14 +48,6 @@ namespace SurfaceAppTest
         //private Vector2 bignou.Position;
         //private Vector2 bignou.Direction;
 
-        /*private Vector2 raquetteGauchePosition;
-        private Vector2 raquetteGaucheDep;
-        private Vector2 raquetteGaucheCurrentDep;
-
-        private Vector2 raquetteDroitePosition;
-        private Vector2 raquetteDroiteDep;
-        private Vector2 raquetteDroiteCurrentDep;*/
-
         private KeyboardState _keyboardState;
         //private float raqetteSpeed;
 
