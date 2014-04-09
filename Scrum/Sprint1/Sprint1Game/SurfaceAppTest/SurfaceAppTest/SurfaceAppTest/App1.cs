@@ -30,7 +30,7 @@ namespace SurfaceAppTest
         private readonly GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
 
-        private TouchTarget touchTarget;
+        public TouchTarget touchTarget; // private
         private Microsoft.Xna.Framework.Color backgroundColor = new Microsoft.Xna.Framework.Color(0,81, 81, 81);
         private bool applicationLoadCompleteSignalled;
 
@@ -47,6 +47,14 @@ namespace SurfaceAppTest
         
         private Vector2 BignouPosition;
         private Vector2 BignouDep;
+
+        /*private Vector2 raquetteGauchePosition;
+        private Vector2 raquetteGaucheDep;
+        private Vector2 raquetteGaucheCurrentDep;
+
+        private Vector2 raquetteDroitePosition;
+        private Vector2 raquetteDroiteDep;
+        private Vector2 raquetteDroiteCurrentDep;*/
 
         private KeyboardState _keyboardState;
         //private float raqetteSpeed;
@@ -170,9 +178,9 @@ namespace SurfaceAppTest
             BignouDep = Vector2.Zero;
 
             batLeft = new Bat();
-            batLeft.Initialize();
+            batLeft.Initialize(touchTarget);
             batRight = new Bat();
-            batRight.Initialize();
+            batRight.Initialize(touchTarget);
             batRight.Position = new Vector2(screenWidth - 140, screenHeight - 455);
 
             /*raquetteGauchePosition = new Vector2(0,0);
@@ -243,7 +251,7 @@ namespace SurfaceAppTest
                 {
                     // TODO: Process touches, 
                     // use the following code to get the state of all current touch points.
-                    ReadOnlyTouchPointCollection touches = touchTarget.GetState();
+                   
                     
 
                     
@@ -437,7 +445,7 @@ namespace SurfaceAppTest
                 /**
                  * Bignou slowing
                  */
-                double speedReductionFactor = 0.999;
+                double speedReductionFactor = 0.997;
                 BignouDep *= (float)speedReductionFactor;
 
 
@@ -553,7 +561,8 @@ namespace SurfaceAppTest
                 }
                 
             }
-            
+
+            //this.batLeft.HandleInput(touchTarget);
             base.Update(gameTime);
         }
 
