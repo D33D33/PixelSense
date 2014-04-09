@@ -46,16 +46,25 @@
       <Output>C:\Users\k1duchem\documents\visual studio 2010\Projects\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\bin\x86\Debug\Content\bahhhhh.xnb</Output>
       <Time>2014-03-19T18:15:19.5809453+01:00</Time>
     </Item>
+    <Item>
+      <Source>MaPolice.spritefont</Source>
+      <Name>MaPolice</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\k1duchem\Documents\Visual Studio 2010\Projects\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\bin\x86\Debug\Content\MaPolice.xnb</Output>
+      <Time>2014-04-02T17:36:37.1416453+02:00</Time>
+    </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>
       <TargetPlatform>Windows</TargetPlatform>
       <TargetProfile>Reach</TargetProfile>
       <BuildConfiguration>Debug</BuildConfiguration>
       <CompressContent>false</CompressContent>
-      <RootDirectory>C:\Users\k1duchem\documents\visual studio 2010\Projects\SurfaceAppTest\SurfaceAppTest\SurfaceAppTestContent\</RootDirectory>
-      <LoggerRootDirectory>C:\Users\k1duchem\documents\visual studio 2010\Projects\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\</LoggerRootDirectory>
-      <IntermediateDirectory>C:\Users\k1duchem\documents\visual studio 2010\Projects\SurfaceAppTest\SurfaceAppTest\SurfaceAppTestContent\obj\x86\Debug\</IntermediateDirectory>
-      <OutputDirectory>C:\Users\k1duchem\documents\visual studio 2010\Projects\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\bin\x86\Debug\Content\</OutputDirectory>
+      <RootDirectory>C:\Users\k1duchem\Documents\Visual Studio 2010\Projects\SurfaceAppTest\SurfaceAppTest\SurfaceAppTestContent\</RootDirectory>
+      <LoggerRootDirectory>C:\Users\k1duchem\Documents\Visual Studio 2010\Projects\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\</LoggerRootDirectory>
+      <IntermediateDirectory>C:\Users\k1duchem\Documents\Visual Studio 2010\Projects\SurfaceAppTest\SurfaceAppTest\SurfaceAppTestContent\obj\x86\Debug\</IntermediateDirectory>
+      <OutputDirectory>C:\Users\k1duchem\Documents\Visual Studio 2010\Projects\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\bin\x86\Debug\Content\</OutputDirectory>
     </Settings>
     <Assemblies>
       <Assembly>
