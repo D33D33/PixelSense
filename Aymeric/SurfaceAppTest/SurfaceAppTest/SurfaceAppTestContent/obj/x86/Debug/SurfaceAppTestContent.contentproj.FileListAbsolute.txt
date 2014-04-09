@@ -1,1 +1,0 @@
-c:\users\k1duchem\documents\visual studio 2010\Projects\SurfaceAppTest\SurfaceAppTest\SurfaceAppTestContent\obj\x86\Debug\SurfaceAppTestContent.contentprojResolveAssemblyReference.cache
