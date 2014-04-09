@@ -1,0 +1,35 @@
+Sprint Review Demo
+
+Project Name : PixelSense				Sprint number : 1
+
+Scrum master name : Aymeric FOURNEL
+Number of developers : 3.5
+Number of working days : 3
+Velocity : 78
+
+Start date (real) : 26/03/2014
+End date   (real) : 09/04/2014
+
+Sprint backlog : 
+
+ 
+User story ident	Task ident	Effort
+(estimated)	Effort
+(real)	Task ended
+Y / N 	User  Story
+validated
+Y / N (PO)	   
+1 : HelloWorld						   
+	A : Clean	3	6	Y	Y	   
+	B : Config	2	2	Y	Y	   
+	C : Salle	2	1	Y	Y	   
+	D : Git	8	4	Y	Y	   
+	E : Wiki	2	3	Y	Y	   
+2 : Tuto						   
+	A : Soft	4	4	Y	Y	   
+	B : Language	8	16	Y	Y	   
+	C : Tuto	15	24	Y	Y	   
+	D : PixelSense	4	4	Y	Y	   
+3 : Unity						   
+	A : XNA <-> Unity	3	2	Y	Y	 
+
