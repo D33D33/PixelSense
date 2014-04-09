@@ -7,17 +7,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\k1duchem\Documents\Visual Studio 2010\Projects\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\bin\x86\Debug\Content\imageTest.xnb</Output>
+      <Output>D:\GIT\PixelSense\Aymeric\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\bin\x86\Debug\Content\imageTest.xnb</Output>
       <Time>2014-03-12T17:15:04.3433037+01:00</Time>
-    </Item>
-    <Item>
-      <Source>paletGame.jpg</Source>
-      <Name>paletGame</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <Options>None</Options>
-      <Output>C:\Users\k1duchem\Documents\Visual Studio 2010\Projects\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\bin\x86\Debug\Content\paletGame.xnb</Output>
-      <Time>2014-03-12T18:54:40.5612057+01:00</Time>
     </Item>
     <Item>
       <Source>raquette1.jpg</Source>
@@ -25,7 +16,7 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\k1duchem\Documents\Visual Studio 2010\Projects\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\bin\x86\Debug\Content\raquette1.xnb</Output>
+      <Output>D:\GIT\PixelSense\Aymeric\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\bin\x86\Debug\Content\raquette1.xnb</Output>
       <Time>2014-03-12T17:58:52.2246132+01:00</Time>
     </Item>
     <Item>
@@ -34,8 +25,17 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\k1duchem\Documents\Visual Studio 2010\Projects\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\bin\x86\Debug\Content\raquette2.xnb</Output>
+      <Output>D:\GIT\PixelSense\Aymeric\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\bin\x86\Debug\Content\raquette2.xnb</Output>
       <Time>2014-03-12T17:58:52.2246132+01:00</Time>
+    </Item>
+    <Item>
+      <Source>paletGame.jpg</Source>
+      <Name>paletGame</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>D:\GIT\PixelSense\Aymeric\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\bin\x86\Debug\Content\paletGame.xnb</Output>
+      <Time>2014-03-12T18:54:40.5612057+01:00</Time>
     </Item>
     <Item>
       <Source>bahhhhh.mp3</Source>
@@ -43,7 +43,7 @@
       <Importer>Mp3Importer</Importer>
       <Processor>SoundEffectProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\k1duchem\documents\visual studio 2010\Projects\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\bin\x86\Debug\Content\bahhhhh.xnb</Output>
+      <Output>D:\GIT\PixelSense\Aymeric\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\bin\x86\Debug\Content\bahhhhh.xnb</Output>
       <Time>2014-03-19T18:15:19.5809453+01:00</Time>
     </Item>
     <Item>
@@ -52,7 +52,7 @@
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\k1duchem\Documents\Visual Studio 2010\Projects\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\bin\x86\Debug\Content\MaPolice.xnb</Output>
+      <Output>D:\GIT\PixelSense\Aymeric\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\bin\x86\Debug\Content\MaPolice.xnb</Output>
       <Time>2014-04-02T17:36:37.1416453+02:00</Time>
     </Item>
     <BuildSuccessful>true</BuildSuccessful>
@@ -61,10 +61,10 @@
       <TargetProfile>Reach</TargetProfile>
       <BuildConfiguration>Debug</BuildConfiguration>
       <CompressContent>false</CompressContent>
-      <RootDirectory>C:\Users\k1duchem\Documents\Visual Studio 2010\Projects\SurfaceAppTest\SurfaceAppTest\SurfaceAppTestContent\</RootDirectory>
-      <LoggerRootDirectory>C:\Users\k1duchem\Documents\Visual Studio 2010\Projects\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\</LoggerRootDirectory>
-      <IntermediateDirectory>C:\Users\k1duchem\Documents\Visual Studio 2010\Projects\SurfaceAppTest\SurfaceAppTest\SurfaceAppTestContent\obj\x86\Debug\</IntermediateDirectory>
-      <OutputDirectory>C:\Users\k1duchem\Documents\Visual Studio 2010\Projects\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\bin\x86\Debug\Content\</OutputDirectory>
+      <RootDirectory>D:\GIT\PixelSense\Aymeric\SurfaceAppTest\SurfaceAppTest\SurfaceAppTestContent\</RootDirectory>
+      <LoggerRootDirectory>D:\GIT\PixelSense\Aymeric\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\</LoggerRootDirectory>
+      <IntermediateDirectory>D:\GIT\PixelSense\Aymeric\SurfaceAppTest\SurfaceAppTest\SurfaceAppTestContent\obj\x86\Debug\</IntermediateDirectory>
+      <OutputDirectory>D:\GIT\PixelSense\Aymeric\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\bin\x86\Debug\Content\</OutputDirectory>
     </Settings>
     <Assemblies>
       <Assembly>

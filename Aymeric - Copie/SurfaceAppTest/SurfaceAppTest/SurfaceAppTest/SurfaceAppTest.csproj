@@ -118,11 +118,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bat.cs" />
-    <Compile Include="CollisionEngine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="App1.cs" />
-    <Compile Include="Sprite.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

@@ -12,3 +12,17 @@ C:\Users\k1duchem\Documents\Visual Studio 2010\Projects\SurfaceAppTest\SurfaceAp
 C:\Users\k1duchem\Documents\Visual Studio 2010\Projects\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\bin\x86\Debug\Content\raquette2.xnb
 C:\Users\k1duchem\documents\visual studio 2010\Projects\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\bin\x86\Debug\Content\bahhhhh.xnb
 C:\Users\k1duchem\Documents\Visual Studio 2010\Projects\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\bin\x86\Debug\Content\MaPolice.xnb
+D:\GIT\PixelSense\Aymeric\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\obj\x86\Debug\SurfaceAppTest.csprojResolveAssemblyReference.cache
+D:\GIT\PixelSense\Aymeric\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+D:\GIT\PixelSense\Aymeric\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\obj\x86\Debug\SurfaceAppTest.exe
+D:\GIT\PixelSense\Aymeric\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\obj\x86\Debug\SurfaceAppTest.pdb
+D:\GIT\PixelSense\Aymeric\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\bin\x86\Debug\Resources\icon.png
+D:\GIT\PixelSense\Aymeric\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\bin\x86\Debug\SurfaceAppTest.xml
+D:\GIT\PixelSense\Aymeric\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\bin\x86\Debug\Content\imageTest.xnb
+D:\GIT\PixelSense\Aymeric\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\bin\x86\Debug\Content\raquette1.xnb
+D:\GIT\PixelSense\Aymeric\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\bin\x86\Debug\Content\raquette2.xnb
+D:\GIT\PixelSense\Aymeric\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\bin\x86\Debug\Content\paletGame.xnb
+D:\GIT\PixelSense\Aymeric\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\bin\x86\Debug\Content\bahhhhh.xnb
+D:\GIT\PixelSense\Aymeric\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\bin\x86\Debug\Content\MaPolice.xnb
+D:\GIT\PixelSense\Aymeric\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\bin\x86\Debug\SurfaceAppTest.exe
+D:\GIT\PixelSense\Aymeric\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\bin\x86\Debug\SurfaceAppTest.pdb
