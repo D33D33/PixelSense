@@ -3,3 +3,4 @@ Content\paletGame.xnb
 Content\raquette1.xnb
 Content\raquette2.xnb
 Content\bahhhhh.xnb
+Content\MaPolice.xnb

@@ -11,3 +11,4 @@ C:\Users\k1duchem\Documents\Visual Studio 2010\Projects\SurfaceAppTest\SurfaceAp
 C:\Users\k1duchem\Documents\Visual Studio 2010\Projects\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\bin\x86\Debug\Content\raquette1.xnb
 C:\Users\k1duchem\Documents\Visual Studio 2010\Projects\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\bin\x86\Debug\Content\raquette2.xnb
 C:\Users\k1duchem\documents\visual studio 2010\Projects\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\bin\x86\Debug\Content\bahhhhh.xnb
+C:\Users\k1duchem\Documents\Visual Studio 2010\Projects\SurfaceAppTest\SurfaceAppTest\SurfaceAppTest\bin\x86\Debug\Content\MaPolice.xnb
