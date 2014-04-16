@@ -16,6 +16,8 @@ using SurfaceControls = Microsoft.Surface.Presentation.Controls;
 using Microsoft.Surface.Presentation;
 using Microsoft.Surface.Presentation.Input;
 
+using Enib.SurfaceLib;
+
 
 
 
@@ -59,6 +61,8 @@ namespace SurfaceAppTest
 
         private int scoreA = 0;
         private int scoreB = 0;
+
+        private Manager manager;
 
         private Sprite batLeft;
         private Sprite batRight;
@@ -167,8 +171,7 @@ namespace SurfaceAppTest
             screenWidth = Program.WindowSize.Width;
             screenHeight = Program.WindowSize.Height;
 
-            /*bignou.Position = Vector2.Zero;
-            bignou.Direction = Vector2.Zero;*/
+            manager = new Manager();
 
             batLeft = new Sprite();
             batLeft.Initialize(touchTarget);
@@ -181,19 +184,9 @@ namespace SurfaceAppTest
             batRight.Position = new Vector2(screenWidth - 140, screenHeight - 455);
             bignou.Initialize(touchTarget);
 
-            engine.register(bignou);
-            engine.register(batLeft);
-            engine.register(batRight);
-
-            /*raquetteGauchePosition = new Vector2(0,0);
-            raquetteGaucheDep = new Vector2(0,1);
-            raquetteGaucheCurrentDep = new Vector2(0, 0);*/
-
-            /*raquetteDroitePosition = new Vector2(screenWidth - 140, screenHeight-455);
-            raquetteDroiteDep = new Vector2(0, 1);
-            raquetteDroiteCurrentDep = new Vector2(0, 0);*/
-
-            //raqetteSpeed = 5;          
+            manager.register(bignou);
+            manager.register(batLeft);
+            manager.register(batRight);
 
             base.Initialize();
         }
@@ -235,9 +228,7 @@ namespace SurfaceAppTest
         protected override void Update(GameTime gameTime)
         {
             engine.update();
-            batLeft.Update(gameTime);
-            batRight.Update(gameTime);
-            bignou.Update(gameTime);
+            manager.Update(gameTime);
             // Hitbox des raquettes
             hitboxRaquetteGauche = new Rectangle((int)batLeft.Position.X, (int)batLeft.Position.Y, batLeft.Size.Width, batLeft.Size.Height);
             hitboxRaquetteDroite = new Rectangle((int)batRight.Position.X, (int)batRight.Position.Y, batRight.Size.Width, batRight.Size.Height);
@@ -245,7 +236,7 @@ namespace SurfaceAppTest
 
             if (ApplicationServices.WindowAvailability != WindowAvailability.Unavailable)
             {
-                // TODO: Add your update logic here
+                /*// TODO: Add your update logic here
                 bignou.Position = bignou.Position + bignou.Speed;
                 
                 // logique du bignou : collision
@@ -576,13 +567,14 @@ namespace SurfaceAppTest
 
             spriteBatch.Begin();
             //spriteBatch.Draw(raquetteGauche, raquetteGauchePosition, Microsoft.Xna.Framework.Color.White);
-            batLeft.Draw(spriteBatch, gameTime);
+            /*batLeft.Draw(spriteBatch, gameTime);
             batRight.Draw(spriteBatch, gameTime);
-            bignou.Draw(spriteBatch, gameTime);
+            bignou.Draw(spriteBatch, gameTime);*/
+            manager.Draw(spriteBatch, gameTime);
             //spriteBatch.Draw(raquetteDroite, raquetteDroitePosition, Microsoft.Xna.Framework.Color.White);
             //spriteBatch.Draw(bignou, bignou.Position, Microsoft.Xna.Framework.Color.White);
             //spriteBatch.Draw(raquetteGauche,hitboxRaquetteGauche,Microsoft.Xna.Framework.Color.Yellow);
-            spriteBatch.Draw(batRight.Texture,hitboxRaquetteDroite,Microsoft.Xna.Framework.Color.Orange);
+            //spriteBatch.Draw(batRight.Texture,hitboxRaquetteDroite,Microsoft.Xna.Framework.Color.Orange);
             //spriteBatch.Draw(bignou, hitboxBignou, Microsoft.Xna.Framework.Color.Red);
 
             Vector2 textSize = _font.MeasureString(scoreA + " - " + scoreB );
