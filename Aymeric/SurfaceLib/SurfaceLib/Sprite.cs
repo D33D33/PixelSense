@@ -23,16 +23,6 @@ namespace Enib
             private Vector2 _delta = Vector2.Zero;
 
             /// <summary>
-            /// Getter and setter of manager
-            /// </summary>
-            public Manager Manager
-            {
-                get { return _manager; }
-                set { _manager = value; }
-            }
-            private Manager _manager = null;
-
-            /// <summary>
             /// Getter and setter of touchTarget
             /// </summary>
             public TouchTarget TouchTarget
@@ -66,7 +56,20 @@ namespace Enib
             /// </summary>
             public Rectangle Size
             {
-                get { return _texture.Bounds; }
+                get
+                {
+                    if (_texture == null)
+                        throw new Exception("Can not get size before LoadContent");
+                    return _texture.Bounds; 
+                }
+            }
+
+            /// <summary>
+            /// Getter of the bounding rect
+            /// </summary>
+            public Rectangle BoundingRect
+            {
+                get { return new Rectangle((int)_position.X, (int)_position.Y, _texture.Width, _texture.Height); ; }
             }
 
             /// <summary>
@@ -102,8 +105,30 @@ namespace Enib
                 set { _speedMax = value; }
             }
 
+            public bool AsMove
+            {
+                get { return _asMove; }
+            }
             private bool _asMove;
+
             private bool _swapEnabled;
+
+            private string _assetName;
+
+            /// <summary>
+            /// Getter of name
+            /// </summary>
+            public string Name
+            {
+                get { return _name; }
+            }
+            private string _name;
+
+            public Sprite(string name, string assetName)
+            {
+                _name = name;
+                _assetName = assetName;
+            }
 
             /// <summary>
             /// Sprite initialisation
@@ -121,9 +146,9 @@ namespace Enib
 
                 _touchTarget = touchTarget;
 
-                _touchTarget.TouchDown += new EventHandler<TouchEventArgs>(this.TouchedDown);
+                /*_touchTarget.TouchDown += new EventHandler<TouchEventArgs>(this.TouchedDown);
                 _touchTarget.TouchMove += new EventHandler<TouchEventArgs>(this.TouchedMove);
-                _touchTarget.TouchUp += new EventHandler<TouchEventArgs>(this.TouchedUp);
+                _touchTarget.TouchUp += new EventHandler<TouchEventArgs>(this.TouchedUp);*/
             }
 
             /// <summary>
@@ -131,9 +156,9 @@ namespace Enib
             /// </summary>
             /// <param name="content">Content Manager</param>
             /// <param name="assetName">L'asset name de l'image à charger pour ce Sprite</param>
-            public virtual void LoadContent(ContentManager content, string assetName)
+            public virtual void LoadContent(ContentManager content)
             {
-                _texture = content.Load<Texture2D>(assetName);
+                _texture = content.Load<Texture2D>(this._assetName);
             }
 
             /// <summary>
@@ -163,7 +188,7 @@ namespace Enib
             }
 
 
-            public void TouchedUp(object sender, EventArgs e)
+            public bool TouchedUp(object sender, EventArgs e)
             {
                 TouchEventArgs args = (TouchEventArgs)e;
                 TouchPoint touch = args.TouchPoint;
@@ -176,14 +201,12 @@ namespace Enib
                     if (_swapEnabled)
                         _nextSpeed = _nextPosition - _position;
 
-                    if (!_asMove && _manager != null)
-                    {
-                        _manager.TouchedSpriteEvent(this);
-                    }
+                    return true;
                 }
+                return false;
             }
 
-            public void TouchedDown(object sender, EventArgs e)
+            public bool TouchedDown(object sender, EventArgs e)
             {
                 TouchEventArgs args = (TouchEventArgs)e;
                 TouchPoint touch = args.TouchPoint;
@@ -196,10 +219,12 @@ namespace Enib
                     _touchId = touch.Id;
                     _delta = new Vector2(x - Position.X, y - Position.Y);
                     _asMove = false;
+                    return true;
                 }
+                return false;
             }
 
-            public void TouchedMove(object sender, EventArgs e)
+            public bool TouchedMove(object sender, EventArgs e)
             {
                 TouchEventArgs args = (TouchEventArgs)e;
                 TouchPoint touch = args.TouchPoint;
@@ -207,11 +232,14 @@ namespace Enib
                 if (_touchId == touch.Id)
                 {
                     _nextPosition = new Vector2(touch.CenterX - _delta.X, touch.CenterY - _delta.Y);
+                    _speed = _nextPosition - _position;
                     if (_swapEnabled)                       
                         _nextSpeed = _nextPosition - _position;
 
                     _asMove = true;
+                    return true;
                 }
+                return false;
             }
 
 
@@ -231,29 +259,75 @@ namespace Enib
             /// <param name="s">Sprite to compute</param>
             public bool Intersect(Sprite s)
             {
-                if (s.Position.X > _position.X && s.Position.X < _position.X + _texture.Width &&
-                    s.Position.Y > _position.Y && s.Position.Y < _position.Y + _texture.Height)
-                {
-                    return true;
-                }
-                if (s.Position.X + s.Size.Width > _position.X && s.Position.X + s.Size.Width < _position.X + _texture.Width &&
-                     s.Position.Y > _position.Y && s.Position.Y < _position.Y + _texture.Height)
-                {
-                    return true;
-                }
-                if (s.Position.X + s.Size.Width > _position.X && s.Position.X + s.Size.Width < _position.X + _texture.Width &&
-                     s.Position.Y + s.Size.Height > _position.Y && s.Position.Y + s.Size.Height < _position.Y + _texture.Height)
-                {
-                    return true;
-                }
-                if (s.Position.X > _position.X && s.Position.X < _position.X + _texture.Width &&
-                     s.Position.Y + s.Size.Height > _position.Y && s.Position.Y + s.Size.Height < _position.Y + _texture.Height)
-                {
-                    return true;
-                }
+                Rectangle rect = new Rectangle((int)s.Position.X, (int)s.Position.Y, s.Size.Width, s.Size.Height);
+                return this.Intersect(rect);
+            }
 
+            /// <summary>
+            /// Compute intersection with a rectangle
+            /// </summary>
+            /// <param name="s">Rectangle to compute</param>
+            public bool Intersect(Rectangle r)
+            {
+                if (r.X > _position.X && r.X < _position.X + _texture.Width &&
+                    r.Y > _position.Y && r.Y < _position.Y + _texture.Height)
+                {
+                    return true;
+                }
+                if (r.X + r.Width > _position.X && r.X + r.Width < _position.X + _texture.Width &&
+                     r.Y > _position.Y && r.Y < _position.Y + _texture.Height)
+                {
+                    return true;
+                }
+                if (r.X + r.Width > _position.X && r.X + r.Width < _position.X + _texture.Width &&
+                     r.Y + r.Height > _position.Y && r.Y + r.Height < _position.Y + _texture.Height)
+                {
+                    return true;
+                }
+                if (r.X > _position.X && r.X < _position.X + _texture.Width &&
+                     r.Y + r.Height > _position.Y && r.Y + r.Height < _position.Y + _texture.Height)
+                {
+                    return true;
+                }
                 return false;
             }
+
+            /*/// <summary>
+            /// Compute intersection with an other Sprite
+            /// </summary>
+            /// <param name="s">Sprite to compute</param>
+            public bool Intersect(Sprite s)
+            {
+                Rectangle rect = new Rectangle((int)s.Position.X, (int)s.Position.Y, s.Size.Width, s.Size.Height);
+                return this.Intersect(rect);
+            }
+
+            /// <summary>
+            /// Compute intersection with a rectangle
+            /// </summary>
+            /// <param name="s">Rectangle to compute</param>
+            public bool Intersect(Rectangle r)
+            {
+                Rectangle rect = new Rectangle((int)_position.X, (int)_position.Y, _texture.Width, _texture.Height);
+
+                if (rect.Contains(r.X, r.Y))
+                {
+                    return true;
+                }
+                if (rect.Contains(r.X + r.Width, r.Y))
+                {
+                    return true;
+                }
+                if (rect.Contains(r.X + r.Width, r.Y + r.Height))
+                {
+                    return true;
+                }
+                if (rect.Contains(r.X, r.Y + r.Height))
+                {
+                    return true;
+                }
+                return false;
+            }*/
         }
     }
 }

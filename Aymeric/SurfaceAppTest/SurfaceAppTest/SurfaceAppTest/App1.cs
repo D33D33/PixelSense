@@ -115,12 +115,10 @@ namespace SurfaceAppTest
         /// </summary>
         private void InitializeSurfaceInput()
         {
-            System.Diagnostics.Debug.Assert(Window != null && Window.Handle != IntPtr.Zero,
-                "Window initialization must be complete before InitializeSurfaceInput is called");
+            System.Diagnostics.Debug.Assert(Window != null && Window.Handle != IntPtr.Zero, "Window initialization must be complete before InitializeSurfaceInput is called");
             if (Window == null || Window.Handle == IntPtr.Zero)
                 return;
-            System.Diagnostics.Debug.Assert(touchTarget == null,
-                "Surface input already initialized");
+            System.Diagnostics.Debug.Assert(touchTarget == null, "Surface input already initialized");
             if (touchTarget != null)
                 return;
 
@@ -172,21 +170,24 @@ namespace SurfaceAppTest
             screenHeight = Program.WindowSize.Height;
 
             manager = new Manager();
+            manager.Behaviour = new Behaviour(screenWidth, screenHeight);
+            manager.Initialize(this, touchTarget, Manager.SelectionMode.NONE);
 
-            batLeft = new Sprite();
+            batLeft = new Sprite("raquette1", "raquette1");
             batLeft.Initialize(touchTarget);
             batLeft.Weight = 1;
-            batRight = new Sprite();
+            manager.register(batLeft);
+
+            batRight = new Sprite("raquette2", "raquette2");
             batRight.Initialize(touchTarget);
             batRight.Weight = 1;
             batRight.Position = new Vector2(screenWidth - 140, screenHeight - 455);
-            bignou = new Sprite();
-            batRight.Position = new Vector2(screenWidth - 140, screenHeight - 455);
-            bignou.Initialize(touchTarget);
-
-            manager.register(bignou);
-            manager.register(batLeft);
             manager.register(batRight);
+
+            bignou = new Sprite("bignou", "paletGame");
+            bignou.Initialize(touchTarget);
+            bignou.Position = new Vector2((screenWidth - 250) / 2, (screenHeight - 250) / 2);
+            manager.register(bignou);
 
             base.Initialize();
         }
@@ -200,10 +201,8 @@ namespace SurfaceAppTest
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            batLeft.LoadContent(Content, "raquette1");
-            batRight.LoadContent(Content, "raquette2");
-            bignou.LoadContent(Content, "paletGame");
-            bignou.Position = new Vector2((screenWidth - bignou.Texture.Width) / 2, (screenHeight - bignou.Texture.Height) / 2);
+            manager.LoadContent(Content);
+
             _ballBounceWall = Content.Load<SoundEffect>("bahhhhh");
 
             _font = Content.Load<SpriteFont>("MaPolice");

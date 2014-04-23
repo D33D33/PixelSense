@@ -54,7 +54,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CircleOverlay.cs" />
+    <Compile Include="Behaviour.cs" />
+    <Compile Include="Overlay.cs" />
     <Compile Include="Manager.cs" />
+    <Compile Include="RectangleOverlay.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
