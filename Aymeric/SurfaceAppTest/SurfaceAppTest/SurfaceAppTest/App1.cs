@@ -16,6 +16,8 @@ using SurfaceControls = Microsoft.Surface.Presentation.Controls;
 using Microsoft.Surface.Presentation;
 using Microsoft.Surface.Presentation.Input;
 
+using Enib.SurfaceLib;
+
 
 
 
@@ -30,7 +32,7 @@ namespace SurfaceAppTest
         private readonly GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
 
-        private TouchTarget touchTarget;
+        public TouchTarget touchTarget; // private
         private Microsoft.Xna.Framework.Color backgroundColor = new Microsoft.Xna.Framework.Color(0,81, 81, 81);
         private bool applicationLoadCompleteSignalled;
 
@@ -41,12 +43,12 @@ namespace SurfaceAppTest
         private int screenHeight;
 
         SoundEffect _ballBounceWall;
-        private Texture2D bignou; // palet
+        //private Texture2D bignou; // palet
         //private Texture2D raquetteGauche; //raquette1
         //private Texture2D raquetteDroite; //raquette2
         
-        private Vector2 BignouPosition;
-        private Vector2 BignouDep;
+        //private Vector2 bignou.Position;
+        //private Vector2 bignou.Direction;
 
         private KeyboardState _keyboardState;
         //private float raqetteSpeed;
@@ -60,8 +62,13 @@ namespace SurfaceAppTest
         private int scoreA = 0;
         private int scoreB = 0;
 
-        private Bat batLeft;
-        private Bat batRight;
+        private Manager manager;
+
+        private Sprite batLeft;
+        private Sprite batRight;
+        private Sprite bignou;
+
+        private CollisionEngine engine = new CollisionEngine();
 
         /// <summary>
         /// The target receiving all surface input for the application.
@@ -108,20 +115,16 @@ namespace SurfaceAppTest
         /// </summary>
         private void InitializeSurfaceInput()
         {
-            System.Diagnostics.Debug.Assert(Window != null && Window.Handle != IntPtr.Zero,
-                "Window initialization must be complete before InitializeSurfaceInput is called");
+            System.Diagnostics.Debug.Assert(Window != null && Window.Handle != IntPtr.Zero, "Window initialization must be complete before InitializeSurfaceInput is called");
             if (Window == null || Window.Handle == IntPtr.Zero)
                 return;
-            System.Diagnostics.Debug.Assert(touchTarget == null,
-                "Surface input already initialized");
+            System.Diagnostics.Debug.Assert(touchTarget == null, "Surface input already initialized");
             if (touchTarget != null)
                 return;
 
             // Create a target for surface input.
             touchTarget = new TouchTarget(Window.Handle, EventThreadChoice.OnBackgroundThread);
             touchTarget.EnableInput();
-
-            //touchTarget.TouchMove += new EventHandler<TouchEventArgs>(evtRaquetteDroite);
         }
 
         #endregion
@@ -166,24 +169,25 @@ namespace SurfaceAppTest
             screenWidth = Program.WindowSize.Width;
             screenHeight = Program.WindowSize.Height;
 
-            BignouPosition = Vector2.Zero;
-            BignouDep = Vector2.Zero;
+            manager = new Manager();
+            manager.Behaviour = new Behaviour(screenWidth, screenHeight);
+            manager.Initialize(this, touchTarget, Manager.SelectionMode.NONE);
 
-            batLeft = new Bat();
-            batLeft.Initialize();
-            batRight = new Bat();
-            batRight.Initialize();
+            batLeft = new Sprite("raquette1", "raquette1");
+            batLeft.Initialize(touchTarget);
+            batLeft.Weight = 1;
+            manager.register(batLeft);
+
+            batRight = new Sprite("raquette2", "raquette2");
+            batRight.Initialize(touchTarget);
+            batRight.Weight = 1;
             batRight.Position = new Vector2(screenWidth - 140, screenHeight - 455);
+            manager.register(batRight);
 
-            /*raquetteGauchePosition = new Vector2(0,0);
-            raquetteGaucheDep = new Vector2(0,1);
-            raquetteGaucheCurrentDep = new Vector2(0, 0);*/
-
-            /*raquetteDroitePosition = new Vector2(screenWidth - 140, screenHeight-455);
-            raquetteDroiteDep = new Vector2(0, 1);
-            raquetteDroiteCurrentDep = new Vector2(0, 0);*/
-
-            //raqetteSpeed = 5;          
+            bignou = new Sprite("bignou", "paletGame");
+            bignou.Initialize(touchTarget);
+            bignou.Position = new Vector2((screenWidth - 250) / 2, (screenHeight - 250) / 2);
+            manager.register(bignou);
 
             base.Initialize();
         }
@@ -197,16 +201,8 @@ namespace SurfaceAppTest
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            manager.LoadContent(Content);
 
-            // TODO: use this.Content to load your application content here
-            bignou = Content.Load<Texture2D>("paletGame");
-
-            BignouPosition.X = (screenWidth - bignou.Width) / 2;
-            BignouPosition.Y = (screenHeight - bignou.Height) / 2;
-
-            //raquetteGauche = Content.Load<Texture2D>("raquette1");
-            batLeft.LoadContent(Content, "raquette1");
-            batRight.LoadContent(Content, "raquette2");
             _ballBounceWall = Content.Load<SoundEffect>("bahhhhh");
 
             _font = Content.Load<SpriteFont>("MaPolice");
@@ -230,35 +226,26 @@ namespace SurfaceAppTest
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            batLeft.Update(gameTime);
-            batRight.Update(gameTime);
+            engine.update();
+            manager.Update(gameTime);
             // Hitbox des raquettes
             hitboxRaquetteGauche = new Rectangle((int)batLeft.Position.X, (int)batLeft.Position.Y, batLeft.Size.Width, batLeft.Size.Height);
             hitboxRaquetteDroite = new Rectangle((int)batRight.Position.X, (int)batRight.Position.Y, batRight.Size.Width, batRight.Size.Height);
-            hitboxBignou = new Rectangle((int)BignouPosition.X,(int)BignouPosition.Y,bignou.Width,bignou.Height);
+            hitboxBignou = new Rectangle((int)bignou.Position.X, (int)bignou.Position.Y, bignou.Size.Width, bignou.Size.Height);
 
             if (ApplicationServices.WindowAvailability != WindowAvailability.Unavailable)
             {
-                if (ApplicationServices.WindowAvailability == WindowAvailability.Interactive)
-                {
-                    // TODO: Process touches, 
-                    // use the following code to get the state of all current touch points.
-                    ReadOnlyTouchPointCollection touches = touchTarget.GetState();
-                    
-
-                    
-                }
-
-                // TODO: Add your update logic here
-                BignouPosition += BignouDep;
+                /*// TODO: Add your update logic here
+                bignou.Position = bignou.Position + bignou.Speed;
                 
                 // logique du bignou : collision
-                if((BignouDep.X < 0 && BignouPosition.X <= 0) || (BignouDep.X > 0 && BignouPosition.X + bignou.Width >= screenWidth)){
-                    //BignouDep.X = -BignouDep.X;
+                if ((bignou.Speed.X < 0 && bignou.Position.X <= 0) || (bignou.Speed.X > 0 && bignou.Position.X + bignou.Size.Width >= screenWidth))
+                {
+                    //bignou.Direction.X = -bignou.Direction.X;
                     Console.WriteLine("GOALLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL!");
                     _ballBounceWall.Play();
 
-                    if ((BignouDep.X < 0 && BignouPosition.X <= 0))
+                    if ((bignou.Speed.X < 0 && bignou.Position.X <= 0))
                     {
                         scoreB++;
                     }
@@ -267,13 +254,13 @@ namespace SurfaceAppTest
                         scoreA++; 
                     }
 
-                    BignouPosition.X = (screenWidth - bignou.Width) / 2;
-                    BignouPosition.Y = (screenHeight - bignou.Height) / 2;
-                    BignouDep *= 0;
+                    bignou.Position = new Vector2((screenWidth - bignou.Size.Width) / 2, (screenHeight - bignou.Size.Height) / 2);
+                    bignou.Speed *= 0;
+                    //bignou.Direction *= 0;
                 }
-                else if((BignouDep.Y < 0 && BignouPosition.Y <= 0) || (BignouDep.Y > 0 && BignouPosition.Y + bignou.Height >= screenHeight))
+                else if ((bignou.Speed.Y < 0 && bignou.Position.Y <= 0) || (bignou.Speed.Y > 0 && bignou.Position.Y + bignou.Size.Height >= screenHeight))
                 {
-                    BignouDep.Y = -BignouDep.Y;
+                    bignou.Speed = new Vector2(bignou.Speed.X, -bignou.Speed.Y);
                     _ballBounceWall.Play();
                 }
 
@@ -282,58 +269,55 @@ namespace SurfaceAppTest
                 *                                                       Logic collision raquette Gauche
                 ************************************************************************************************************************************************/
 
-                float Y = Math.Min(Math.Min(Math.Max(BignouPosition.Y + bignou.Height - batLeft.Position.Y, 0), Math.Max(batLeft.Position.Y + batLeft.Size.Height - BignouPosition.Y, 0)), bignou.Height);
-                float X = Math.Min(Math.Min(Math.Max(BignouPosition.X + bignou.Width - batLeft.Position.X, 0), Math.Max(batLeft.Position.X + batLeft.Size.Width - BignouPosition.X, 0)), bignou.Width);
+                /*float Y = Math.Min(Math.Min(Math.Max(bignou.Position.Y + bignou.Size.Height - batLeft.Position.Y, 0), Math.Max(batLeft.Position.Y + batLeft.Size.Height - bignou.Position.Y, 0)), bignou.Size.Height);
+                float X = Math.Min(Math.Min(Math.Max(bignou.Position.X + bignou.Size.Width - batLeft.Position.X, 0), Math.Max(batLeft.Position.X + batLeft.Size.Width - bignou.Position.X, 0)), bignou.Size.Width);
 
                 //Console.WriteLine(X + " - " + Y);
-                if (hitboxRaquetteGauche.Contains((int)BignouPosition.X, (int)BignouPosition.Y) ||
-                    hitboxRaquetteGauche.Contains((int)BignouPosition.X, (int)BignouPosition.Y + bignou.Height))
+
+                if (X < Y)
                 {
-                    if (X < Y)
+                    if (hitboxRaquetteGauche.Contains((int)bignou.Position.X, (int)bignou.Position.Y) ||
+                        hitboxRaquetteGauche.Contains((int)bignou.Position.X, (int)bignou.Position.Y + bignou.Size.Height))
                     {
-                        if (BignouDep.X <= 0)
+                        if (bignou.Direction.X <= 0)
                         {
-                            BignouDep.X = Math.Max(-BignouDep.X, batLeft.Speed.X);
-                            BignouDep.Y += batLeft.Speed.Y * (float)0.5;
+                            bignou.Direction = new Vector2(Math.Max(-bignou.Direction.X, batLeft.Speed.X), batLeft.Speed.Y + batLeft.Speed.Y * (float)0.5);
                             _ballBounceWall.Play();
                         }
                         else if (batLeft.Direction.X > 0)
                         {
-                            BignouPosition.X += batLeft.Direction.X;
+                            bignou.Position = new Vector2(bignou.Position.X + batLeft.Direction.X, bignou.Position.Y);
                         }
                     }
-                }
-                else if (   hitboxRaquetteGauche.Contains((int)BignouPosition.X + bignou.Width, (int)BignouPosition.Y) ||
-                            hitboxRaquetteGauche.Contains((int)BignouPosition.X + bignou.Width, (int)BignouPosition.Y + bignou.Height))
-                {
-                    if (X < Y)
+                    else if (   hitboxRaquetteGauche.Contains((int)bignou.Position.X + bignou.Size.Width, (int)bignou.Position.Y) ||
+                                hitboxRaquetteGauche.Contains((int)bignou.Position.X + bignou.Size.Width, (int)bignou.Position.Y + bignou.Size.Height))
                     {
-                        if (BignouDep.X >= 0)
+                        if (bignou.Direction.X >= 0)
                         {
-                            BignouDep.X = Math.Min(-BignouDep.X, batLeft.Speed.X);
-                            BignouDep.Y += batLeft.Speed.Y * (float)0.5;
+                            bignou.Direction = new Vector2(Math.Min(-bignou.Direction.X, batLeft.Speed.X), bignou.Direction.Y + batLeft.Speed.Y * (float)0.5);
                             _ballBounceWall.Play();
                         }
                         else if (batLeft.Direction.X < 0)
                         {
-                            BignouPosition.X += batLeft.Direction.X;
+                            bignou.Position.X += batLeft.Direction.X;
                         }
                     }
                 }
+
                 if (hitboxBignou.Contains((int)batLeft.Position.X, (int)batLeft.Position.Y) ||
                         hitboxBignou.Contains((int)batLeft.Position.X + batLeft.Size.Width, (int)batLeft.Position.Y))
                 {
                     if (X > Y)
                     {
-                        if (BignouDep.Y >= 0)
+                        if (bignou.Direction.Y >= 0)
                         {
-                            BignouDep.X += batLeft.Speed.X * (float)0.5;
-                            BignouDep.Y = Math.Min(-BignouDep.Y, batLeft.Speed.Y);
+                            bignou.Direction.X += batLeft.Speed.X * (float)0.5;
+                            bignou.Direction.Y = Math.Min(-bignou.Direction.Y, batLeft.Speed.Y);
                             _ballBounceWall.Play();
                         }
                         else if (batLeft.Direction.Y < 0)
                         {
-                            BignouPosition.Y += batLeft.Direction.Y;
+                            bignou.Position.Y += batLeft.Direction.Y;
                         }
                     }
                 }
@@ -342,15 +326,15 @@ namespace SurfaceAppTest
                 {
                     if (X > Y)
                     {
-                        if (BignouDep.Y <= 0)
+                        if (bignou.Direction.Y <= 0)
                         {
-                            BignouDep.X += batLeft.Speed.X * (float)0.5;
-                            BignouDep.Y = Math.Max(-BignouDep.Y, batLeft.Speed.Y);
+                            bignou.Direction.X += batLeft.Speed.X * (float)0.5;
+                            bignou.Direction.Y = Math.Max(-bignou.Direction.Y, batLeft.Speed.Y);
                             _ballBounceWall.Play();
                         }
                         else if (batLeft.Direction.Y > 0)
                         {
-                            BignouPosition.Y += batLeft.Direction.Y;
+                            bignou.Position.Y += batLeft.Direction.Y;
                         }
                     }
                 }
@@ -360,41 +344,41 @@ namespace SurfaceAppTest
                 *                                                       Logic collision raquette droite
                 ************************************************************************************************************************************************/
 
-                float Y2 = Math.Min(Math.Min(Math.Max(BignouPosition.Y + bignou.Height - batRight.Position.Y, 0), Math.Max(batRight.Position.Y + batRight.Size.Height - BignouPosition.Y, 0)), bignou.Height);
-                float X2 = Math.Min(Math.Min(Math.Max(BignouPosition.X + bignou.Width - batRight.Position.X, 0), Math.Max(batRight.Position.X + batRight.Size.Width - BignouPosition.X, 0)), bignou.Width);
+                /*float Y2 = Math.Min(Math.Min(Math.Max(bignou.Position.Y + bignou.Height - batRight.Position.Y, 0), Math.Max(batRight.Position.Y + batRight.Size.Height - bignou.Position.Y, 0)), bignou.Height);
+                float X2 = Math.Min(Math.Min(Math.Max(bignou.Position.X + bignou.Width - batRight.Position.X, 0), Math.Max(batRight.Position.X + batRight.Size.Width - bignou.Position.X, 0)), bignou.Width);
 
-                if (hitboxRaquetteDroite.Contains((int)BignouPosition.X + bignou.Width, (int)BignouPosition.Y) ||
-                    hitboxRaquetteDroite.Contains((int)BignouPosition.X + bignou.Width, (int)BignouPosition.Y + bignou.Height))
+                if (hitboxRaquetteDroite.Contains((int)bignou.Position.X + bignou.Width, (int)bignou.Position.Y) ||
+                    hitboxRaquetteDroite.Contains((int)bignou.Position.X + bignou.Width, (int)bignou.Position.Y + bignou.Height))
                 {
                     if (X2 < Y2)
                     {
-                        if (BignouDep.X >= 0)
+                        if (bignou.Direction.X >= 0)
                         {
                             Console.WriteLine(batRight.Speed.X);
-                            BignouDep.X = Math.Min(-BignouDep.X, batRight.Speed.X);
-                            BignouDep.Y += batRight.Speed.Y * (float)0.5;
+                            bignou.Direction.X = Math.Min(-bignou.Direction.X, batRight.Speed.X);
+                            bignou.Direction.Y += batRight.Speed.Y * (float)0.5;
                             _ballBounceWall.Play();
                         }
                         else if (batRight.Direction.X < 0)
                         {
-                            BignouPosition.X += batRight.Direction.X;// = raquetteDroitePosition.X - bignou.Width;
+                            bignou.Position.X += batRight.Direction.X;// = raquetteDroitePosition.X - bignou.Width;
                         }
                     }
                 }
-                else if(hitboxRaquetteDroite.Contains((int)BignouPosition.X, (int)BignouPosition.Y) ||
-                        hitboxRaquetteDroite.Contains((int)BignouPosition.X, (int)BignouPosition.Y + bignou.Height))
+                else if(hitboxRaquetteDroite.Contains((int)bignou.Position.X, (int)bignou.Position.Y) ||
+                        hitboxRaquetteDroite.Contains((int)bignou.Position.X, (int)bignou.Position.Y + bignou.Height))
                 {
                     if (X2 < Y2)
                     {
-                        if (BignouDep.X <= 0)
+                        if (bignou.Direction.X <= 0)
                         {
-                            BignouDep.X = Math.Max(-BignouDep.X, batRight.Speed.X);
-                            BignouDep.Y += batRight.Speed.Y * (float)0.5;
+                            bignou.Direction.X = Math.Max(-bignou.Direction.X, batRight.Speed.X);
+                            bignou.Direction.Y += batRight.Speed.Y * (float)0.5;
                             _ballBounceWall.Play();
                         }
                         else if (batRight.Direction.X > 0)
                         {
-                            BignouPosition.X += batRight.Direction.X;//  = raquetteDroitePosition.X + raquetteDroite.Width;
+                            bignou.Position.X += batRight.Direction.X;//  = raquetteDroitePosition.X + raquetteDroite.Width;
                         }
                     }
                 }
@@ -404,15 +388,15 @@ namespace SurfaceAppTest
                 {
                     if (X2 > Y2)
                     {
-                        if (BignouDep.Y >= 0)
+                        if (bignou.Direction.Y >= 0)
                         {
-                            BignouDep.X += batRight.Speed.X * (float)0.5;
-                            BignouDep.Y = Math.Min(-BignouDep.Y, batRight.Speed.Y);
+                            bignou.Direction.X += batRight.Speed.X * (float)0.5;
+                            bignou.Direction.Y = Math.Min(-bignou.Direction.Y, batRight.Speed.Y);
                             _ballBounceWall.Play();
                         }
                         else if (batRight.Direction.Y < 0)
                         {
-                            BignouPosition.Y += batRight.Direction.Y;//  = raquetteDroitePosition.Y - bignou.Height;
+                            bignou.Position.Y += batRight.Direction.Y;//  = raquetteDroitePosition.Y - bignou.Height;
                         }
                     }
                 }
@@ -421,15 +405,15 @@ namespace SurfaceAppTest
                 {
                     if (X2 > Y2)
                     {
-                        if (BignouDep.Y <= 0)
+                        if (bignou.Direction.Y <= 0)
                         {
-                            BignouDep.X += batRight.Speed.X * (float)0.5;
-                            BignouDep.Y = Math.Max(-BignouDep.Y, batRight.Speed.Y);
+                            bignou.Direction.X += batRight.Speed.X * (float)0.5;
+                            bignou.Direction.Y = Math.Max(-bignou.Direction.Y, batRight.Speed.Y);
                             _ballBounceWall.Play();
                         }
                         else if (batRight.Position.Y > 0)
                         {
-                            BignouPosition.Y += batRight.Position.Y;// raquetteDroitePosition.Y + raquetteDroite.Height;
+                            bignou.Position.Y += batRight.Position.Y;// raquetteDroitePosition.Y + raquetteDroite.Height;
                         }
                     }
                 }
@@ -437,8 +421,8 @@ namespace SurfaceAppTest
                 /**
                  * Bignou slowing
                  */
-                double speedReductionFactor = 0.999;
-                BignouDep *= (float)speedReductionFactor;
+                /*double speedReductionFactor = 0.997;
+                bignou.Direction *= (float)speedReductionFactor;
 
 
                 /***
@@ -553,7 +537,8 @@ namespace SurfaceAppTest
                 }
                 
             }
-            
+
+            //this.batLeft.HandleInput(touchTarget);
             base.Update(gameTime);
         }
 
@@ -581,12 +566,14 @@ namespace SurfaceAppTest
 
             spriteBatch.Begin();
             //spriteBatch.Draw(raquetteGauche, raquetteGauchePosition, Microsoft.Xna.Framework.Color.White);
-            batLeft.Draw(spriteBatch, gameTime);
+            /*batLeft.Draw(spriteBatch, gameTime);
             batRight.Draw(spriteBatch, gameTime);
+            bignou.Draw(spriteBatch, gameTime);*/
+            manager.Draw(spriteBatch, gameTime);
             //spriteBatch.Draw(raquetteDroite, raquetteDroitePosition, Microsoft.Xna.Framework.Color.White);
-            spriteBatch.Draw(bignou, BignouPosition, Microsoft.Xna.Framework.Color.White);
+            //spriteBatch.Draw(bignou, bignou.Position, Microsoft.Xna.Framework.Color.White);
             //spriteBatch.Draw(raquetteGauche,hitboxRaquetteGauche,Microsoft.Xna.Framework.Color.Yellow);
-            spriteBatch.Draw(batRight.Texture,hitboxRaquetteDroite,Microsoft.Xna.Framework.Color.Orange);
+            //spriteBatch.Draw(batRight.Texture,hitboxRaquetteDroite,Microsoft.Xna.Framework.Color.Orange);
             //spriteBatch.Draw(bignou, hitboxBignou, Microsoft.Xna.Framework.Color.Red);
 
             Vector2 textSize = _font.MeasureString(scoreA + " - " + scoreB );
