@@ -116,7 +116,7 @@ namespace Enib
                     obj.Update(gameTime);
                 }
 
-                if (_overlay != null)
+                if (_overlay != null && _touchPoints.Count == 2)
                 {
                     _selectedObjects.Clear();
                     _overlay.GetSelection(_objects, _selectedObjects);
@@ -157,8 +157,7 @@ namespace Enib
 
                 foreach (Sprite obj in _selectedObjects)
                 {
-                    Rectangle rect = new Rectangle((int)obj.Position.X, (int)obj.Position.Y, obj.Size.Width, obj.Size.Height);
-                    spriteBatch.Draw(obj.Texture, rect, Microsoft.Xna.Framework.Color.Orange);
+                    obj.Draw(spriteBatch, gameTime, Color.Orange);
                 }
 
                 if (_touchPoints.Count == 2 && (_selectionMode == SelectionMode.CIRCLE || _selectionMode == SelectionMode.RECTANGLE))
@@ -200,15 +199,6 @@ namespace Enib
                 MyTouchPoint p = new MyTouchPoint(touch);
                 if (_touchPoints.Contains(p))
                 {
-                    LinkedListNode<MyTouchPoint> mp = _touchPoints.Find(p);
-                    if (mp.Value.AsMove)
-                    {
-                        Console.WriteLine("blabla");
-                    }
-                    else
-                    {
-                        Console.WriteLine("bloblo");
-                    }
                     _touchPoints.Remove(p);
                 }
             }
