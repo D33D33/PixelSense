@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
 using Microsoft.Surface.Core;
+using System.Timers;
 
 namespace Enib
 {
@@ -21,6 +22,12 @@ namespace Enib
         {
             private int _touchId = 0;
             private Vector2 _delta = Vector2.Zero;
+            private Timer _timer;
+            private Menu_enib menu;
+            private bool _asMenu = false;
+            private bool _showMenu = true;
+            private bool _menuPart = false;
+
 
             /// <summary>
             /// Getter and setter of touchTarget
@@ -33,6 +40,14 @@ namespace Enib
             private TouchTarget _touchTarget;
 
             /// <summary>
+            /// Getter of menu
+            /// </summary>
+            public Menu_enib Menu
+            {
+                get { return menu; }
+            }
+
+            /// <summary>
             /// Getter and setter of scale
             /// </summary>
             public float Scale
@@ -43,7 +58,15 @@ namespace Enib
             private float _scale = 1;
 
             /// <summary>
-            /// Getter and of weight
+            /// Set sprite as a part of menu
+            /// </summary>
+            public void setMenuPart()
+            {
+                this._menuPart = true;
+            }
+
+            /// <summary>
+            /// Getter and setter of weight
             /// </summary>
             public float Weight
             {
@@ -161,6 +184,16 @@ namespace Enib
             }
 
             /// <summary>
+            /// Associe au sprite
+            /// </summary>
+            /// <param name="menu">Menu_enib à associer au sprite</param>
+            public void setMenu(Menu_enib menu)
+            {
+                this.menu = menu;
+                _asMenu = true;
+            }
+
+            /// <summary>
             /// Sprite initialisation
             /// </summary>
             public virtual void Initialize(TouchTarget touchTarget)
@@ -202,6 +235,12 @@ namespace Enib
 
                     if (_dragable)
                         _position = new Vector2(touch.CenterX - _delta.X, touch.CenterY - _delta.Y);
+
+                    if (_asMenu)
+                    {
+                        _timer.Enabled = false;
+                    }
+
                     return true;
                 }
                 return false;
@@ -218,6 +257,25 @@ namespace Enib
                     _touchId = touch.Id;
                     _delta = new Vector2(touch.CenterX - Position.X, touch.CenterY - Position.Y);
                     _asMove = false;
+
+                    if (_menuPart)
+                    {
+                        this.MenuAction();
+                    }
+
+                    if (_asMenu&&_showMenu)
+                    {
+                        _timer = new System.Timers.Timer(2000);
+                        _timer.Enabled = true;
+                        _timer.Elapsed += OnTimedEvent;
+                    }
+
+                    else if (_asMenu && !_showMenu)
+                    {
+                        this.menu.Hide();
+                        _showMenu = true;
+                    }
+
                     return true;
                 }
                 return false;
@@ -227,15 +285,27 @@ namespace Enib
             {
                 TouchEventArgs args = (TouchEventArgs)e;
                 TouchPoint touch = args.TouchPoint;
+                
 
                 if (_dragable && _touchId == touch.Id)
                 {
                     _position = new Vector2(touch.CenterX - _delta.X, touch.CenterY - _delta.Y);
 
                     _asMove = true;
+
                     return true;
                 }
                 return false;
+            }
+
+            public void OnTimedEvent(object sender, ElapsedEventArgs e)
+            {
+                Console.WriteLine("montre-toi");
+                if (_showMenu)
+                {
+                    this.menu.Show();
+                    _showMenu = false;
+                }
             }
 
             /// <summary>
@@ -304,6 +374,11 @@ namespace Enib
                     return true;
                 }
                 return false;
+            }
+
+            public virtual void MenuAction()
+            {
+                Console.WriteLine("fraise des bois");
             }
         }
     }
