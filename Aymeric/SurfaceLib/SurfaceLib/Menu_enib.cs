@@ -41,6 +41,7 @@ namespace Enib
                 {
                     e.setMenuPart();
                     e.Dragable = false;
+                    e.MenuCaller = this;
                 }
             }
 
@@ -58,8 +59,7 @@ namespace Enib
                     e.Position = new Vector2(last_position_x, last_position + last_heigth);
                     last_position = (int)e.Position.Y;
                     last_heigth = e.Size.Height;
-                }
-                Console.WriteLine(last_position_x);
+                }                
             }
 
             /// <summary>
@@ -80,7 +80,6 @@ namespace Enib
             public void Show()
             {
                 this.Dispose();
-                Console.WriteLine("show");
             }
         }
     }

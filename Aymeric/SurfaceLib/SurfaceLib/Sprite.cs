@@ -27,6 +27,7 @@ namespace Enib
             private bool _asMenu = false;
             private bool _showMenu = true;
             private bool _menuPart = false;
+            private Menu_enib menuCaller;
 
 
             /// <summary>
@@ -45,6 +46,15 @@ namespace Enib
             public Menu_enib Menu
             {
                 get { return menu; }
+            }
+
+            /// <summary>
+            /// Getter of menu
+            /// </summary>
+            public Menu_enib MenuCaller
+            {
+                get { return menu; }
+                set { menuCaller = value; }
             }
 
             /// <summary>
@@ -261,6 +271,7 @@ namespace Enib
                     if (_menuPart)
                     {
                         this.MenuAction();
+                        this.menuCaller.Hide();
                     }
 
                     if (_asMenu&&_showMenu)
@@ -300,7 +311,6 @@ namespace Enib
 
             public void OnTimedEvent(object sender, ElapsedEventArgs e)
             {
-                Console.WriteLine("montre-toi");
                 if (_showMenu)
                 {
                     this.menu.Show();
