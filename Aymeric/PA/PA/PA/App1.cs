@@ -47,6 +47,8 @@ namespace PA
         private Plane_Menu_Catapulte2 menu_pt3;
         private Enib.SurfaceLib.Menu menu;
 
+        private string _serverIP;
+
         /// <summary>
         /// The target receiving all surface input for the application.
         /// </summary>
@@ -58,10 +60,11 @@ namespace PA
         /// <summary>
         /// Default constructor.
         /// </summary>
-        public App1()
+        public App1(string serverIP)
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            _serverIP = serverIP;
         }
 
         #region Initialization
@@ -148,7 +151,7 @@ namespace PA
 
             manager = new Manager();
             manager.Initialize(this, touchTarget, Manager.SelectionMode.MONO);
-            manager.Behaviour = new BehaviourPlane(screenWidth, screenHeight);
+            manager.Behaviour = new BehaviourPlane(screenWidth, screenHeight, _serverIP);
 
             aircraftCarrier = new Sprite("aircraftCarrier", "aircraftCarrier");
             aircraftCarrier.Initialize(touchTarget);

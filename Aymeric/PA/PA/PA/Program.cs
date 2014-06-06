@@ -18,6 +18,7 @@ namespace PA
         [STAThread]
         static void Main(string[] args)
         {
+            Console.WriteLine(args[0] + "errrrrrrhoihoihoihoihoioihhhhhhhhhhhhhhhhoihiohiohio");
             // Disable the WinForms unhandled exception dialog.
             // SurfaceShell will notify the user.
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.ThrowException);
@@ -25,7 +26,13 @@ namespace PA
             // Apply Surface globalization settings
             GlobalizationSettings.ApplyToCurrentThread();
 
-            using (App1 app = new App1())
+            string ip = "";
+            if (args.Length >= 1)
+                ip = args[0];
+            else
+                Console.WriteLine("Usage : PA.exe serverIpAddress");
+
+            using (App1 app = new App1(ip))
             {
                 app.Run();
             }

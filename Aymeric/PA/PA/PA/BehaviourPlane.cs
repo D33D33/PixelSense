@@ -26,20 +26,22 @@ namespace enib
             private StateObject _state = new StateObject();
             private int _screenWidth, _screenHeight;
             private bool _init = true;
+            private string _serverIP;
 
-            public BehaviourPlane(int screenWidth, int screenHeight)
+            public BehaviourPlane(int screenWidth, int screenHeight, string serverIP)
             {
                 _state.workSocket = new TcpClient();
                 _screenWidth = screenWidth;
                 _screenHeight = screenHeight;
+                _serverIP = serverIP;
             }
 
             public override void Update(LinkedList<Sprite> objects, LinkedList<Sprite> selection, LinkedList<MyTouchPoint> touchPoints)
             {
-                if (!_state.workSocket.Connected)
+                if (!_state.workSocket.Connected && _serverIP != "")
                 {
                     try{
-                        _state.workSocket.Connect("192.168.76.222", 5447);
+                        _state.workSocket.Connect(_serverIP, 5447);
                         _state.workSocket.GetStream().BeginRead(_state.buffer, 0, StateObject.BufferSize, new AsyncCallback(ReadCallback), _state);
                         _init = true;
                         Console.WriteLine("Connection success");
