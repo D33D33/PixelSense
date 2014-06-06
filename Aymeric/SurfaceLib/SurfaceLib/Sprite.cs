@@ -23,12 +23,7 @@ namespace Enib
             private int _touchId = 0;
             private Vector2 _delta = Vector2.Zero;
             private Timer _timer;
-            private Menu_enib menu;
-            private bool _asMenu = false;
-            private bool _showMenu = true;
-            private bool _menuPart = false;
-            private Menu_enib menuCaller;
-
+            private Menu _menu = null;
 
             /// <summary>
             /// Getter and setter of touchTarget
@@ -43,18 +38,10 @@ namespace Enib
             /// <summary>
             /// Getter of menu
             /// </summary>
-            public Menu_enib Menu
+            public Menu Menu
             {
-                get { return menu; }
-            }
-
-            /// <summary>
-            /// Getter of menu
-            /// </summary>
-            public Menu_enib MenuCaller
-            {
-                get { return menu; }
-                set { menuCaller = value; }
+                set { this._menu = value; }
+                get { return _menu; }
             }
 
             /// <summary>
@@ -68,14 +55,6 @@ namespace Enib
             private float _scale = 1;
 
             /// <summary>
-            /// Set sprite as a part of menu
-            /// </summary>
-            public void setMenuPart()
-            {
-                this._menuPart = true;
-            }
-
-            /// <summary>
             /// Getter and setter of weight
             /// </summary>
             public float Weight
@@ -86,7 +65,7 @@ namespace Enib
             private float _weight = 0;
 
             /// <summary>
-            /// Getter and of rotation
+            /// Getter and setter of rotation
             /// </summary>
             public float Rotation
             {
@@ -96,7 +75,7 @@ namespace Enib
             protected float _rotation = 0;
 
             /// <summary>
-            /// Getter and of touchable
+            /// Getter and setter of touchable
             /// </summary>
             public bool Touchable
             {
@@ -106,7 +85,7 @@ namespace Enib
             private bool _touchable = true;
 
             /// <summary>
-            /// Getter and of dragable
+            /// Getter and setter of dragable
             /// </summary>
             public bool Dragable
             {
@@ -116,7 +95,7 @@ namespace Enib
             private bool _dragable = true;
 
             /// <summary>
-            /// Getter and of texture
+            /// Getter of texture
             /// </summary>
             public Texture2D Texture
             {
@@ -160,6 +139,9 @@ namespace Enib
             }
             protected Vector2 _position;
 
+            /// <summary>
+            /// Getter of as move
+            /// </summary>
             public bool AsMove
             {
                 get { return _asMove; }
@@ -167,7 +149,7 @@ namespace Enib
             private bool _asMove;
 
             /// <summary>
-            /// Getter and setter of position
+            /// Getter and setter of show bounding rect
             /// </summary>
             public virtual bool ShowBoundingRect
             {
@@ -194,16 +176,6 @@ namespace Enib
             }
 
             /// <summary>
-            /// Associe au sprite
-            /// </summary>
-            /// <param name="menu">Menu_enib à associer au sprite</param>
-            public void setMenu(Menu_enib menu)
-            {
-                this.menu = menu;
-                _asMenu = true;
-            }
-
-            /// <summary>
             /// Sprite initialisation
             /// </summary>
             public virtual void Initialize(TouchTarget touchTarget)
@@ -225,16 +197,20 @@ namespace Enib
             }
 
             /// <summary>
-            /// Met à jour les variables du sprite
+            /// Called at each game update
             /// </summary>
-            /// <param name="gameTime">Le GameTime associé à la frame</param>
+            /// <param name="gameTime">Frame GameTime</param>
             public virtual void Update(GameTime gameTime)
             {
 
             }
 
-
-            public bool TouchedUp(object sender, EventArgs e)
+            /// <summary>
+            /// Called at each touch up event
+            /// </summary>
+            /// <param name="sender">Object</param>
+            /// <param name="e">EventArgs</param>
+            public virtual bool TouchedUp(object sender, EventArgs e)
             {
                 TouchEventArgs args = (TouchEventArgs)e;
                 TouchPoint touch = args.TouchPoint;
@@ -246,7 +222,7 @@ namespace Enib
                     if (_dragable)
                         _position = new Vector2(touch.CenterX - _delta.X, touch.CenterY - _delta.Y);
 
-                    if (_asMenu)
+                    if (_menu != null)
                     {
                         _timer.Enabled = false;
                     }
@@ -256,7 +232,12 @@ namespace Enib
                 return false;
             }
 
-            public bool TouchedDown(object sender, EventArgs e)
+            /// <summary>
+            /// Called at each touch down event
+            /// </summary>
+            /// <param name="sender">Object</param>
+            /// <param name="e">EventArgs</param>
+            public virtual bool TouchedDown(object sender, EventArgs e)
             {
                 if (!_touchable) return false;
                 TouchEventArgs args = (TouchEventArgs)e;
@@ -268,42 +249,39 @@ namespace Enib
                     _delta = new Vector2(touch.CenterX - Position.X, touch.CenterY - Position.Y);
                     _asMove = false;
 
-                    if (_menuPart)
+                    if (_menu != null)
                     {
-                        this.MenuAction();
-                        this.menuCaller.Hide();
+                        if (! _menu.displayed())
+                        {
+                            _timer = new System.Timers.Timer(1000);
+                            _timer.Enabled = true;
+                            _timer.Elapsed += OnTimedEvent;
+                        }
+                        else
+                        {
+                            this._menu.Hide();
+                        }
                     }
-
-                    if (_asMenu&&_showMenu)
-                    {
-                        _timer = new System.Timers.Timer(2000);
-                        _timer.Enabled = true;
-                        _timer.Elapsed += OnTimedEvent;
-                    }
-
-                    else if (_asMenu && !_showMenu)
-                    {
-                        this.menu.Hide();
-                        _showMenu = true;
-                    }
-
                     return true;
                 }
                 return false;
             }
 
-            public bool TouchedMove(object sender, EventArgs e)
+
+            /// <summary>
+            /// Called at each touch move event
+            /// </summary>
+            /// <param name="sender">Object</param>
+            /// <param name="e">EventArgs</param>
+            public virtual bool TouchedMove(object sender, EventArgs e)
             {
                 TouchEventArgs args = (TouchEventArgs)e;
                 TouchPoint touch = args.TouchPoint;
                 
-
                 if (_dragable && _touchId == touch.Id)
                 {
                     _position = new Vector2(touch.CenterX - _delta.X, touch.CenterY - _delta.Y);
-
                     _asMove = true;
-
                     return true;
                 }
                 return false;
@@ -311,18 +289,16 @@ namespace Enib
 
             public void OnTimedEvent(object sender, ElapsedEventArgs e)
             {
-                if (_showMenu)
-                {
-                    this.menu.Show();
-                    _showMenu = false;
-                }
+                if (! _menu.displayed())
+                    this._menu.Show();
             }
 
             /// <summary>
-            /// Dessine le sprite en utilisant ses attributs et le spritebatch donné
+            /// Draw sprite
             /// </summary>
-            /// <param name="spriteBatch">Le spritebatch avec lequel dessiner</param>
-            /// <param name="gameTime">Le GameTime de la frame</param>
+            /// <param name="spriteBatch">SpriteBatch to use</param>
+            /// <param name="gameTime">frame gametime</param>
+            /// <param name="color">color</param>
             public virtual void Draw(SpriteBatch spriteBatch, GameTime gameTime, Color? color = null)
             {
                 Color tmp = color.HasValue ? color.Value : Color.White;
@@ -384,11 +360,6 @@ namespace Enib
                     return true;
                 }
                 return false;
-            }
-
-            public virtual void MenuAction()
-            {
-                Console.WriteLine("fraise des bois");
             }
         }
     }

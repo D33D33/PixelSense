@@ -23,6 +23,13 @@ namespace Enib
             public Behaviour()
             {
             }
+
+            /// <summary>
+            /// Called at each game update
+            /// </summary>
+            /// <param name="objects">Sprite handled by the manager</param>
+            /// <param name="selection">Selected Sprite</param>
+            /// <param name="touchPoints">List of current touch points</param>
             public virtual void Update(LinkedList<Sprite> objects, LinkedList<Sprite> selection, LinkedList<MyTouchPoint> touchPoints)
             {
 

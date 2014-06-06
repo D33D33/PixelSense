@@ -56,7 +56,8 @@
   <ItemGroup>
     <Compile Include="CircleOverlay.cs" />
     <Compile Include="Behaviour.cs" />
-    <Compile Include="Menu_enib.cs" />
+    <Compile Include="MenuEntry.cs" />
+    <Compile Include="Menu.cs" />
     <Compile Include="Overlay.cs" />
     <Compile Include="Manager.cs" />
     <Compile Include="RectangleOverlay.cs" />

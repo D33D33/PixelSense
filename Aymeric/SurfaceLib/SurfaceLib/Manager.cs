@@ -100,15 +100,19 @@ namespace Enib
                 _touchTarget.TouchUp += new EventHandler<TouchEventArgs>(this.TouchedUp);
             }
 
-            public void register(Sprite s)
+            /// <summary>
+            /// Register a sprite throw the manager
+            /// </summary>
+            /// <param name="s">Sprite to register</param>
+            public void Register(Sprite s)
             {
                 _objects.AddLast(s);
             }
 
             /// <summary>
-            /// Met à jour les variables des sprites
+            /// Update
             /// </summary>
-            /// <param name="gameTime">Le GameTime associé à la frame</param>
+            /// <param name="gameTime">Frame GameTime</param>
             public void Update(GameTime gameTime)
             {
                 foreach (Sprite obj in _objects)
@@ -144,10 +148,10 @@ namespace Enib
             }
 
             /// <summary>
-            /// Dessine les sprites en utilisant ses attributs et le spritebatch donné
+            /// Draw sprites handled by the manager
             /// </summary>
-            /// <param name="spriteBatch">Le spritebatch avec lequel dessiner</param>
-            /// <param name="gameTime">Le GameTime de la frame</param>
+            /// <param name="spriteBatch">SpriteBatch to use</param>
+            /// <param name="gameTime">Frame GameTime</param>
             public virtual void Draw(SpriteBatch spriteBatch, GameTime gameTime)
             {
                 foreach (Sprite obj in _objects)
@@ -174,6 +178,11 @@ namespace Enib
                 }
             }
 
+            /// <summary>
+            /// Called at each touch up event
+            /// </summary>
+            /// <param name="sender">Object</param>
+            /// <param name="e">EventArgs</param>
             public void TouchedUp(object sender, EventArgs e)
             {
                 foreach (Sprite obj in _objects)
@@ -203,6 +212,11 @@ namespace Enib
                 }
             }
 
+            /// <summary>
+            /// Called at each touch down event
+            /// </summary>
+            /// <param name="sender">Object</param>
+            /// <param name="e">EventArgs</param>
             public void TouchedDown(object sender, EventArgs e)
             {
                 bool handled = false;
@@ -221,6 +235,11 @@ namespace Enib
                 }
             }
 
+            /// <summary>
+            /// Called at each touch move event
+            /// </summary>
+            /// <param name="sender">Object</param>
+            /// <param name="e">EventArgs</param>
             public void TouchedMove(object sender, EventArgs e)
             {
                 foreach (Sprite obj in _objects)
