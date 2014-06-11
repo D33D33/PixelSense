@@ -18,7 +18,6 @@ namespace PA
         [STAThread]
         static void Main(string[] args)
         {
-            Console.WriteLine(args[0] + "errrrrrrhoihoihoihoihoioihhhhhhhhhhhhhhhhoihiohiohio");
             // Disable the WinForms unhandled exception dialog.
             // SurfaceShell will notify the user.
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.ThrowException);
